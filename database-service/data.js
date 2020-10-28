@@ -8,7 +8,7 @@ export default class DatabaseService {
 
     /** options.dbUrl contains URL for mongo database */
     static async make() {
-        const dbUrl = "mongodb://localhost:27017/stocksDb";
+        const dbUrl = "mongodb://localhost:27017/StockPrediction";
         let client;
         try {
             client = await mongo.connect(dbUrl, MONGO_CONNECT_OPTIONS );
@@ -31,7 +31,7 @@ export default class DatabaseService {
     /** Release all resources held by this blog.  Specifically, close
      *  any database connections.
      */
-    async addUserStock(userDetails){
+    async addUser(userDetails){
         try{
             userDetails._id = (Math.random() * 9999 + 1000).toFixed(4);
             const res = await this.stocksCollection.insertOne(userDetails);
@@ -41,12 +41,41 @@ export default class DatabaseService {
         }
     }
 
+    async addUserStock(userDetails){
+        const result = await this.stocksCollection.findOne({Firstname: userDetails.Firstname});
+        try{
+            if(result){
+                 result.Stocks[[userDetails.stock]] = userDetails.shares;
+                const obj = Object.assign({}, result);
+                const res = await this.stocksCollection.updateOne( {_id:result._id}, { $set: obj }, { upsert: true });
+            }
+            else {
+                throw "NOT_FOUND: User not found";
+            }
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     async getStocks(){
         try{
-            const arr = this.stocksCollection.find({}).toArray();
+            const arr = await this.stocksCollection.find({}).toArray();
             return arr;
         }
         catch (e) {
+            throw e;
+        }
+    }
+
+    async getUserStocks(userDetails){
+        try{
+            const result = await this.stocksCollection.findOne(userDetails, { projection: { _id: 0 } });
+            result.Name = `${result.Firstname} ${result.Lastname}`;
+            delete result.Firstname; delete result.Lastname;
+            return result;
+        }
+        catch(e) {
             throw e;
         }
     }
@@ -59,8 +88,6 @@ export default class DatabaseService {
     async clear() {
         await this.db.dropDatabase();
     }
-
-
 }
 
 const MONGO_CONNECT_OPTIONS = {

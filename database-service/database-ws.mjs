@@ -32,10 +32,14 @@ function setupRoutes(app) {
     app.use(cors());
     app.use(bodyParser.json());
     //@TODO
-    // app.get('/', home(app));
-    // app.get('/login.html', login(app));
-    app.post('/addStock', addNewStock(app));
-    app.get('/getStock', getUserStock(app));
+    app.get('/getStocks', getStocks(app));
+    app.get('/getUserStocks', getUserStocks(app));
+    app.get('/close', closeConnection(app));
+    app.get('/clear', clearDatabase(app));
+    app.post('/addUser', addUser(app));
+    app.post('/addUserStock', addUserStock(app));
+    // app.delete('/delete', removeStock(app));
+
 
     app.use(do404());
     app.use(doErrors());
@@ -44,10 +48,24 @@ function setupRoutes(app) {
 /****************************** Handlers *******************************/
 
 //@TODO
-function addNewStock(app){
+function addUser(app){
     return errorWrap(async function (req, res){
         try {
             const obj = req.body;
+            const results = await app.locals.model.addUser(obj);
+            res.sendStatus(CREATED);
+        }
+        catch(err) {
+            const mapped = mapError(err);
+            res.status(mapped.status).json(mapped);
+        }
+    });
+}
+
+function addUserStock(app){
+    return errorWrap(async function (req, res){
+        try {
+            const obj = req.query;
             const results = await app.locals.model.addUserStock(obj);
             res.sendStatus(CREATED);
         }
@@ -58,15 +76,50 @@ function addNewStock(app){
     });
 }
 
-function getUserStock(app){
+function getStocks(app){
     return errorWrap(async function (req, res){
        try{
            const data = await app.locals.model.getStocks();
            res.json(data);
        }
        catch(err){
-
+            throw err;
        }
+    });
+}
+
+function getUserStocks(app){
+    return errorWrap(async function (req, res){
+        try{
+            const userDetails = req.query;
+            const data = await app.locals.model.getUserStocks(userDetails);
+            res.json(data);
+        }
+        catch(err){
+            throw err;
+        }
+    });
+}
+function closeConnection(app){
+    return errorWrap(async function (req, res){
+        try{
+            const data = await app.locals.model.close();
+            res.json(data);
+        }
+        catch(err){
+            throw err;
+        }
+    });
+}
+function clearDatabase(app){
+    return errorWrap(async function (req, res){
+        try{
+            const data = await app.locals.model.clear();
+            res.sendStatus(OK);
+        }
+        catch(err){
+            throw err;
+        }
     });
 }
 
