@@ -31,6 +31,16 @@ export default function serve(port, model) {
 function setupRoutes(app) {
     app.use(cors());
     app.use(bodyParser.json());
+    app.use(function(err, req, res, next) {
+        console.log("Body parser error");
+        if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+            res.status(400).send({
+                status: "BAD_REQUEST",
+                code: 400,
+                message: "Checkout the content type of the input body"
+            });
+        } else next();
+    });
     //@TODO
     app.get('/getStocks', getStocks(app));
     app.get('/getUserStocks', getUserStocks(app));
