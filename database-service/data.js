@@ -32,9 +32,19 @@ export default class DatabaseService {
      *  any database connections.
      */
     async addUser(userDetails){
+        const result = await this.stocksCollection.findOne({Firstname: userDetails.Firstname});
         try{
-            userDetails._id = (Math.random() * 9999 + 1000).toFixed(4);
-            const res = await this.stocksCollection.insertOne(userDetails);
+            userDetails._id = (result) ? result._id : (Math.random() * 9999 + 1000).toFixed(4);
+            // userDetails.Stocks
+            const userInfo = {...userDetails, ...result};
+            const mergedStocks = {};
+            if(result){
+                Object.keys(result.Stocks).concat(Object.keys(userDetails.Stocks))
+                    .forEach(k => mergedStocks[k] = k in userDetails.Stocks ? userDetails.Stocks[k] : result.Stocks[k]);
+                userInfo.Stocks = mergedStocks;
+            }
+
+            const res = await this.stocksCollection.updateOne({_id:userInfo._id}, {$set: userInfo }, { upsert: true });
         }
         catch (e) {
             throw e;
