@@ -120,4 +120,4 @@ def predict_stocks():
 		
 	
 
-app.run()     
+app.run() 
