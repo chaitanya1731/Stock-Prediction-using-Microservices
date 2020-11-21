@@ -4,7 +4,12 @@ yahoo-stock-prices - npm
 yahoo-finance - npm historical
 stock-info - npm
 
+---------------------------------------------------------
+Steps to run all services - 
+node index.mjs
 
+Steps to run ui-service - 
+node index.js
 
 
 ------------Example JSON Stocks -------------------------
