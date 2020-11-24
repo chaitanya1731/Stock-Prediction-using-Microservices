@@ -1,0 +1,54 @@
+version: "3"
+
+services: 
+  database-service:
+    container_name: db-service
+    restart: always
+    build: 
+      context: ./database-service
+      dockerfile: Dockerfile
+    volumes:
+      - ./db-service:/app
+    ports: 
+      - "3000:3000"
+    links: 
+      - mongo
+    environment: 
+        - MONGO_URL=mongodb://mongo:27017/StockPrediction
+
+  stock-service:
+    container_name: stock-service
+    restart: always
+    build: 
+      context: ./stock-service
+      dockerfile: Dockerfile
+    volumes:
+      - ./stock-service:/app
+    ports: 
+      - "4000:4000"
+    links: 
+      - mongo
+    environment: 
+        - MONGO_URL=mongodb://mongo:27017/StockPrediction
+
+  ui-service:
+    container_name: ui-service
+    restart: always
+    build: 
+      context: ./ui-service
+      dockerfile: Dockerfile
+    volumes:
+      - ./ui-service:/app
+    ports: 
+      - "5000:5000"
+    links: 
+      - mongo
+    
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27018:27017"
