@@ -1,25 +1,12 @@
-// import assert from 'assert';
 import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
-// import fs from 'fs';
-// import Path from 'path';
-// const path = require("path");
-// import mustache from 'mustache';
-// import querystring from 'querystring';
+
 import path from 'path';
 const __dirname = path.resolve();
 const __dirPath = `${__dirname}/views`;
 
 const port = 5000;
-//
-// const OK = 200;
-// const CREATED = 201;
-// const BAD_REQUEST = 400;
-// const NOT_FOUND = 404;
-// const CONFLICT = 409;
-// const SERVER_ERROR = 500;
-
 
 const app = express();
 app.locals.port = port;
@@ -34,7 +21,7 @@ app.listen(port, function() {
 
 app.use(cors());
 app.use(bodyParser.json());
-//@TODO
+
 app.get('/', home(app));
 app.get('/index.html', home(app));
 app.get(`/userDetails.html`, userDetails(app));
@@ -47,6 +34,7 @@ function home(app){
             res.sendFile(`${__dirPath}/index.html`);
         }
         catch(err){
+            console.error(err);
             throw err;
         }
     });
@@ -60,6 +48,7 @@ function userDetails(app){
         });
     }
     catch(err){
+        console.error(err);
         throw err;
     }
 }
@@ -72,6 +61,7 @@ function stockInfo(){
         });
     }
     catch(err){
+        console.error(err);
         throw err;
     }
 }

@@ -1,6 +1,6 @@
 // -*- mode: JavaScript; -*-
 import mongo from 'mongodb';
-const dbUrl = (process.env.MONGO_URL !== undefined) ? process.env.MONGO_URL : "mongodb://localhost:27017/StockPrediction";
+const dbUrl = (process.env.MONGO_URL !== undefined) ? process.env.MONGO_URL : "mongodb://localhost:27017/Stock-Service";
 export default class StockService {
     constructor(props) {
         Object.assign(this, props)

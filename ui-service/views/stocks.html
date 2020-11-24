@@ -59,48 +59,69 @@
                 <div class="container-fluid">
                     <div class="row dash-row">
                         <div class="col-xl-4">
-                            <div class="stats stats-primary">
-                                <h3 class="stats-title"> Sign ups </h3>
-                                <div class="stats-content">
-                                    <div class="stats-icon">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <div class="stats-data">
-                                        <div class="stats-number">114</div>
-                                        <div class="stats-change">
-                                            <span class="stats-percentage">+25%</span>
-                                            <span class="stats-timeframe">from last month</span>
-                                        </div>
-                                    </div>
+                            <div class="stats stats-dark">
+                                <div>
+                                    <table id="metadata1">
+                                        <tr>
+                                            <td><h5>Display Name</h5></td>
+                                            <td><h5 id="displayName"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Exchange Name</h5></td>
+                                            <td><h5 id="fullExchangeName"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Currency & Region</h5></td>
+                                            <td><h5 id="currency"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Market Volume</h5></td>
+                                            <td><h5 id="volume"></h5></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-xl-4">
-                            <div id="abc" class="stats stats-success">
-                                <h3 class="stats-title"> Realtime Stock Price </h3>
+                            <div class="stats stats-dark">
+                                <div>
+                                    <table id="metadata1">
+                                        <tr>
+                                            <td><h5>Market High</h5></td>
+                                            <td><h5 id="regMarketHigh"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Market Low</h5></td>
+                                            <td><h5 id="regMarketLow"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>52 Week High</h5></td>
+                                            <td><h5 id="fiftyTwoWeekHigh"></h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>52 Week Low</h5></td>
+                                            <td><h5 id="fiftyTwoWeekLow"></h5></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div id="abc" class="stats stats-dark">
+                                <h3 class="stats-title" id="realtimeStockPrice"></h3>
+                                <h5 class="stats-change" id="longName"></h5>
                                 <div class="stats-content">
                                     <div class="stats-icon">
-                                        <i class="fas fa-cart-arrow-down"></i>
+                                        <i class="fab fa-bitcoin"></i>
                                     </div>
                                     <div class="stats-data">
                                         <div id="stockRate" class="stats-number"></div>
                                         <div class="stats-change">
                                             <span id="percentChange" class="stats-percentage"></span>
-                                            <span class="stats-timeframe">from Avg. Price</span>
+                                            <span class="stats-timeframe"></span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-                            <div class="stats stats-danger">
-                                <h3 class="stats-title"> Open tickets </h3>
-                                <div class="stats-content">
-                                    <div class="stats-icon">
-                                        <i class="fas fa-phone"></i>
-                                    </div>
-                                    <div class="stats-data">
-                                        <div class="stats-number">5</div>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +193,10 @@
     img{
         display: block;
         margin: auto;
+    }
+    #metadata1, #metadata2{
+        table-layout: auto;
+        width: 100%;
     }
 </style>
 </html>

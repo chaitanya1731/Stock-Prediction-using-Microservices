@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import * as alphaModel from './alpha.mjs';
+import * as stockInfoModel from './stock-info.mjs';
 
 const OK = 200;
 const CREATED = 201;
@@ -11,7 +12,6 @@ const NOT_FOUND = 404;
 const CONFLICT = 409;
 const SERVER_ERROR = 500;
 
-// const __dirname = Path.dirname(new URL(import.meta.url).pathname);
 
 export default function serve(port, model) {
     const app = express();
@@ -28,21 +28,52 @@ export default function serve(port, model) {
 function setupRoutes(app) {
     app.use(cors());
     app.use(bodyParser.json());
-    //@TODO
+
     app.get('/getIntraDayQuotes/:symbol', getIntraDayQuotes(app));
     app.get('/getDailyQuotes/:symbol', getDailyQuotes(app));
-    // app.get('/getUserStocks', getUserStocks(app));
-    app.get('/close', closeConnection(app));
-    app.get('/clear', clearDatabase(app));
-
+    app.get(`/getSingleStockInfo/:symbol`, getSingleStockInfo(app));
 
     app.use(do404());
     app.use(doErrors());
 }
 
 /****************************** Handlers *******************************/
+function getSingleStockInfo(app){
+    return errorWrap(async function (req, res){
+        try{
+            const symbol = req.params.symbol;
+            const stockInfoData = await stockInfoModel.getSingleStockInfo(symbol);
+            const data = {
+                region: stockInfoData.region,
+                quoteType: stockInfoData.quoteType,
+                currency: stockInfoData.currency,
+                fullExchangeName: stockInfoData.fullExchangeName,
+                financialCurrency: stockInfoData.financialCurrency,
+                regularMarketOpen: stockInfoData.regularMarketOpen,
+                fiftyTwoWeekLow: stockInfoData.fiftyTwoWeekLow,
+                fiftyTwoWeekHigh: stockInfoData.fiftyTwoWeekHigh,
+                regularMarketPrice: stockInfoData.regularMarketPrice,
+                regularMarketDayHigh: stockInfoData.regularMarketDayHigh,
+                regularMarketDayLow: stockInfoData.regularMarketDayLow,
+                regularMarketVolume: stockInfoData.regularMarketVolume,
+                shortName: stockInfoData.shortName,
+                longName: stockInfoData.longName,
+                exchangeTimezoneName: stockInfoData.exchangeTimezoneName,
+                exchangeTimezoneShortName: stockInfoData.exchangeTimezoneShortName,
+                market: stockInfoData.market,
+                displayName: stockInfoData.displayName,
+                symbol: stockInfoData.symbol
+            };
+            // const data = await app.locals.model.addIntraDayQuotes(alphaData);
+            res.json(data);
+        }
+        catch(err){
+            const mapped = mapError(err);
+            res.status(mapped.status).json(mapped);
+        }
+    });
+}
 
-//@TODO
 function getIntraDayQuotes(app){
     return errorWrap(async function (req, res){
         try{
@@ -52,7 +83,8 @@ function getIntraDayQuotes(app){
             res.json(data);
         }
         catch(err){
-            throw err;
+            const mapped = mapError(err);
+            res.status(mapped.status).json(mapped);
         }
     });
 }
@@ -66,85 +98,13 @@ function getDailyQuotes(app){
             res.json(data);
         }
         catch(err){
-            throw err;
-        }
-    });
-}
-
-function addUser(app){
-    return errorWrap(async function (req, res){
-        try {
-            const obj = req.body;
-            const results = await app.locals.model.addUser(obj);
-            res.sendStatus(CREATED);
-        }
-        catch(err) {
             const mapped = mapError(err);
             res.status(mapped.status).json(mapped);
         }
     });
 }
 
-function addUserStock(app){
-    return errorWrap(async function (req, res){
-        try {
-            const obj = req.query;
-            const results = await app.locals.model.addUserStock(obj);
-            res.sendStatus(CREATED);
-        }
-        catch(err) {
-            const mapped = mapError(err);
-            res.status(mapped.status).json(mapped);
-        }
-    });
-}
 
-function getStocks(app){
-    return errorWrap(async function (req, res){
-       try{
-           const data = await app.locals.model.getStocks();
-           res.json(data);
-       }
-       catch(err){
-            throw err;
-       }
-    });
-}
-
-function getUserStocks(app){
-    return errorWrap(async function (req, res){
-        try{
-            const userDetails = req.query;
-            const data = await app.locals.model.getUserStocks(userDetails);
-            res.json(data);
-        }
-        catch(err){
-            throw err;
-        }
-    });
-}
-function closeConnection(app){
-    return errorWrap(async function (req, res){
-        try{
-            const data = await app.locals.model.close();
-            res.json(data);
-        }
-        catch(err){
-            throw err;
-        }
-    });
-}
-function clearDatabase(app){
-    return errorWrap(async function (req, res){
-        try{
-            const data = await app.locals.model.clear();
-            res.sendStatus(OK);
-        }
-        catch(err){
-            throw err;
-        }
-    });
-}
 
 /**************************** Error Handling ***************************/
 
