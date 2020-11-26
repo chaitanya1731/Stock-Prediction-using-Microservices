@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/scr/app
+WORKDIR /usr/scr/prediction
 
 COPY requirements.txt ./
 
@@ -10,4 +10,4 @@ COPY . .
 
 CMD [ "python", "./stock.py" ]
 
-EXPOSE 5000
+EXPOSE 6000
