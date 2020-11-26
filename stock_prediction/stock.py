@@ -12,7 +12,7 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 def available_stocks(stock):
-        available_stocks = ['VTI','AAPL']
+        available_stocks = ['VTI','AAPL','WMT','V','MSFT','DIS','NFLX','NVDA','TWTR','ORCL','BABA','FB']
         if stock not in available_stocks:
                 return "No stock found:"+stock+"\n"
         else:
