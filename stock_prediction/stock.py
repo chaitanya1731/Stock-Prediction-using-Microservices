@@ -7,8 +7,10 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 import datetime
 import json
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 def available_stocks(stock):
@@ -102,10 +104,10 @@ def pjson(stock,prediction):
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Distant Reading Archive</h1>
-<p>A prototype API for distant reading of science fiction novels.</p>'''
+    return '''<h1>Prediction Service</h1>
+<p>Please visit - /predict?id=<stock_symbol></p>'''
 
-@app.route('/predict_stocks',methods=['GET'])
+@app.route('/predict',methods=['GET'])
 def predict_stocks():
 	if 'id' in request.args:
 		id = request.args['id']

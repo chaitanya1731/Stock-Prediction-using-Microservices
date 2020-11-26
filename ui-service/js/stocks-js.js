@@ -1,6 +1,6 @@
 const STOCKS_URL = `http://localhost:4000`;
 const USERS_URL = `http://localhost:3000`;
-const PREDICTION_URL = `http://localhost:6000`;
+const PREDICTION_URL = `http://localhost:5050`;
 let stockname = "";
 let firstname = "";
 let stockprice = 0;
@@ -57,6 +57,7 @@ async function setStockMetaData(symbol){
         $(`#stockRate`).html(`$${stockprice}`);
         $(`#percentChange`).html(``);
     }
+    // let time = setInterval(updateRealtimeStock, 750);
 }
 
 function displayData(data){
@@ -86,10 +87,12 @@ function updateRealtimeStock(){
     $(`.stats-timeframe`).html('from Avg. Price');
     if (currentPrice <= price){
         if ( $('#abc').hasClass('stats-success') || $('#abc').hasClass('stats-dark')){
+            $('#abc').removeClass('stats-dark');
             $('#abc').removeClass('stats-success');
             $('#abc').addClass('stats-danger');
         }
     }else{
+        $('#abc').removeClass('stats-dark');
         $('#abc').removeClass('stats-danger');
         $('#abc').addClass('stats-success');
     }
@@ -171,21 +174,22 @@ async function setStockCharts(stockname){
     });
     stockChart2.render();
 
+
     dataPoints = [];
     // Chart 3 - Predicted Chart
-    /*const result3 = await fetch(`${PREDICTION_URL}/${stockname}`);
+    const result3 = await fetch(`${PREDICTION_URL}/predict?id=${stockname}`);
     const predictedChartData = await result3.json();
     delete predictedChartData._id;
     for(const [key, value] of Object.entries(predictedChartData)){
         dataPoints.push({
-            x: new Date(Date.parse(key)),
-            y: Number(value["2. high"])
+            x: new Date(key),
+            y: Number(value)
         });
     }
     dataSeries.dataPoints = dataPoints;
     data3.push(dataSeries);
     const stockChart3 = new CanvasJS.StockChart("chartContainer3",{
-        title:{ text:`${stockname} - IntraDay` },
+        title:{ text:`${stockname} - Predicted` },
         animationEnabled: true,
         rangeSelector:{ enabled: false },
         charts: [{
@@ -203,7 +207,7 @@ async function setStockCharts(stockname){
             },
         }],
     });
-    stockChart3.render();*/
+    stockChart3.render();
 }
 
 function generateRandomNumbers(price){

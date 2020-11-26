@@ -3,3 +3,4 @@ numpy
 scikit-learn
 pandas
 datetime
+flask_cors
