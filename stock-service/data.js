@@ -1,6 +1,6 @@
 // -*- mode: JavaScript; -*-
 import mongo from 'mongodb';
-
+const dbUrl = (process.env.MONGO_URL !== undefined) ? process.env.MONGO_URL : "mongodb://localhost:27017/Stock-Service";
 export default class StockService {
     constructor(props) {
         Object.assign(this, props)
@@ -8,7 +8,7 @@ export default class StockService {
 
     /** options.dbUrl contains URL for mongo database */
     static async make() {
-        const dbUrl = "mongodb://localhost:27017/StockPrediction";
+        // const dbUrl = "mongodb://localhost:27017/StockPrediction";
         let client;
         try {
             client = await mongo.connect(dbUrl, MONGO_CONNECT_OPTIONS );

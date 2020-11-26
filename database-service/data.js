@@ -1,6 +1,8 @@
 // -*- mode: JavaScript; -*-
 import mongo from 'mongodb';
 
+const dbUrl = (process.env.MONGO_URL !== undefined) ? process.env.MONGO_URL : "mongodb://localhost:27017/StockPrediction";
+
 export default class DatabaseService {
     constructor(props) {
         Object.assign(this, props)
@@ -8,7 +10,7 @@ export default class DatabaseService {
 
     /** options.dbUrl contains URL for mongo database */
     static async make() {
-        const dbUrl = "mongodb://localhost:27017/StockPrediction";
+        // const dbUrl = "mongodb://localhost:27017/StockPrediction";
         let client;
         try {
             client = await mongo.connect(dbUrl, MONGO_CONNECT_OPTIONS );
@@ -32,9 +34,19 @@ export default class DatabaseService {
      *  any database connections.
      */
     async addUser(userDetails){
+        const result = await this.stocksCollection.findOne({Firstname: userDetails.Firstname});
         try{
-            userDetails._id = (Math.random() * 9999 + 1000).toFixed(4);
-            const res = await this.stocksCollection.insertOne(userDetails);
+            userDetails._id = (result) ? result._id : (Math.random() * 9999 + 1000).toFixed(4);
+            // userDetails.Stocks
+            const userInfo = {...userDetails, ...result};
+            const mergedStocks = {};
+            if(result){
+                Object.keys(result.Stocks).concat(Object.keys(userDetails.Stocks))
+                    .forEach(k => mergedStocks[k] = k in userDetails.Stocks ? userDetails.Stocks[k] : result.Stocks[k]);
+                userInfo.Stocks = mergedStocks;
+            }
+
+            const res = await this.stocksCollection.updateOne({_id:userInfo._id}, {$set: userInfo }, { upsert: true });
         }
         catch (e) {
             throw e;

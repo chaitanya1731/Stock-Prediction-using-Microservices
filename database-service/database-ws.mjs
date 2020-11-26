@@ -2,6 +2,8 @@ import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import Path from 'path';
+const __dirname = Path.resolve();
+
 
 const OK = 200;
 const CREATED = 201;
@@ -10,15 +12,10 @@ const NOT_FOUND = 404;
 const CONFLICT = 409;
 const SERVER_ERROR = 500;
 
-// const __dirname = Path.dirname(new URL(import.meta.url).pathname);
-
 export default function serve(port, model) {
     const app = express();
     app.locals.port = port;
     app.locals.model = model;
-    // app.use('/', express.static('views'));
-    //app.set('views', Path.join(__dirname, 'views'));
-    // app.set('view engine', 'ejs');
 
     setupRoutes(app);
 
@@ -31,6 +28,7 @@ export default function serve(port, model) {
 function setupRoutes(app) {
     app.use(cors());
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(function(err, req, res, next) {
         console.log("Body parser error");
         if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
@@ -42,12 +40,11 @@ function setupRoutes(app) {
         } else next();
     });
     //@TODO
+    app.get('/', home(app));
     app.get('/getStocks', getStocks(app));
     app.get('/getUserStocks', getUserStocks(app));
-    app.get('/close', closeConnection(app));
-    app.get('/clear', clearDatabase(app));
     app.post('/addUser', addUser(app));
-    app.post('/addUserStock', addUserStock(app));
+    // app.post('/addUserStock', addUserStock(app));
     // app.delete('/delete', removeStock(app));
 
 
@@ -56,14 +53,33 @@ function setupRoutes(app) {
 }
 
 /****************************** Handlers *******************************/
-
-//@TODO
+function home(app){
+    return errorWrap(async function (req, res){
+        try {
+            res.sendFile(`${__dirname}/index.html`);
+        }
+        catch(err) {
+            const mapped = mapError(err);
+            res.status(mapped.status).json(mapped);
+        }
+    });
+}
 function addUser(app){
     return errorWrap(async function (req, res){
         try {
-            const obj = req.body;
+            const dbModel = {
+                Firstname: req.body.Firstname,
+                Lastname: req.body.Lastname,
+                Stocks: (req.body.Stocks) ? req.body.Stocks : {
+                 [req.body.Stock] : {
+                     shares : req.body.shares,
+                     price : req.body.price
+                 }
+                }
+            };
+            const obj = dbModel;
             const results = await app.locals.model.addUser(obj);
-            res.sendStatus(CREATED);
+            res.sendFile(`${__dirname}/index.html`);
         }
         catch(err) {
             const mapped = mapError(err);
@@ -72,29 +88,29 @@ function addUser(app){
     });
 }
 
-function addUserStock(app){
-    return errorWrap(async function (req, res){
-        try {
-            const obj = req.query;
-            const results = await app.locals.model.addUserStock(obj);
-            res.sendStatus(CREATED);
-        }
-        catch(err) {
-            const mapped = mapError(err);
-            res.status(mapped.status).json(mapped);
-        }
-    });
-}
+// function addUserStock(app){
+//     return errorWrap(async function (req, res){
+//         try {
+//             const obj = req.query;
+//             const results = await app.locals.model.addUserStock(obj);
+//             res.sendStatus(CREATED);
+//         }
+//         catch(err) {
+//             const mapped = mapError(err);
+//             res.status(mapped.status).json(mapped);
+//         }
+//     });
+// }
 
 function getStocks(app){
     return errorWrap(async function (req, res){
-       try{
-           const data = await app.locals.model.getStocks();
-           res.json(data);
-       }
-       catch(err){
+        try{
+            const data = await app.locals.model.getStocks();
+            res.json(data);
+        }
+        catch(err){
             throw err;
-       }
+        }
     });
 }
 
@@ -110,34 +126,7 @@ function getUserStocks(app){
         }
     });
 }
-function closeConnection(app){
-    return errorWrap(async function (req, res){
-        try{
-            const data = await app.locals.model.close();
-            res.json(data);
-        }
-        catch(err){
-            throw err;
-        }
-    });
-}
-function clearDatabase(app){
-    return errorWrap(async function (req, res){
-        try{
-            const data = await app.locals.model.clear();
-            res.sendStatus(OK);
-        }
-        catch(err){
-            throw err;
-        }
-    });
-}
 
-/**************************** Error Handling ***************************/
-
-/** Ensures a server error results in nice JSON sent back to client
- *  with details logged on console.
- */
 function do404(app) {
     return async function(req, res) {
         const message = `${req.method} not supported for ${req.originalUrl}`;
