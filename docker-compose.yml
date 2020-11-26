@@ -43,13 +43,13 @@ services:
     
   prediction-service:
     container_name: prediction-service
-    # image: ui-service
+    image: prediction-service
     restart: always
     build: 
       context: ./stock_prediction
       dockerfile: Dockerfile
     ports: 
-      - "6000:6000"
+      - "5050:5050"
 
   mongo:
     container_name: mongo

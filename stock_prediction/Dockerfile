@@ -10,4 +10,4 @@ COPY . .
 
 CMD [ "python", "./stock.py" ]
 
-EXPOSE 6000
+EXPOSE 5050
