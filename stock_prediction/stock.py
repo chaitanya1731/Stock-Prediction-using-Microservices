@@ -120,4 +120,4 @@ def predict_stocks():
 		
 	
 
-app.run(host='0.0.0.0', port=6000) 
+app.run(host='0.0.0.0', port=5050) 
