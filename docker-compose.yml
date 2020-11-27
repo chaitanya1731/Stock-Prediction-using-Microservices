@@ -3,7 +3,7 @@ version: "3"
 services: 
   database-service:
     container_name: db-service
-    image: db-service
+    image: iamchaitanyakulkarni/db-service
     restart: always
     build: 
       context: ./database-service
@@ -17,7 +17,7 @@ services:
 
   stock-service:
     container_name: stock-service
-    image: stock-service
+    image: iamchaitanyakulkarni/stock-service
     restart: always
     build: 
       context: ./stock-service
@@ -31,7 +31,7 @@ services:
 
   ui-service:
     container_name: ui-service
-    image: ui-service
+    image: iamchaitanyakulkarni/ui-service
     restart: always
     build: 
       context: ./ui-service
@@ -43,7 +43,7 @@ services:
     
   prediction-service:
     container_name: prediction-service
-    image: prediction-service
+    image: iamchaitanyakulkarni/prediction-service
     restart: always
     build: 
       context: ./stock_prediction
