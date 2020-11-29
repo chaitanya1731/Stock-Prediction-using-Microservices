@@ -6,11 +6,11 @@ spec:
   selector:
     app: database-service
   type: LoadBalancer
+  loadBalancerIP: 34.66.138.117
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30000
 ---
 apiVersion: apps/v1
 kind: Deployment

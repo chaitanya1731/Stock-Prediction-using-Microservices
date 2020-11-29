@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="../css/spur.css">
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script> -->
-<!--    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>-->
-<!--    <script src="../js/chart-js-config.js"></script>-->
-    <!--  -->
     <title>Stock Prediction using Microservices</title>
 </head>
 
@@ -27,12 +22,15 @@
                 <a href="#" class="spur-logo"><i class="fas fa-bolt"></i> <span>User Details</span></a>
             </header>
             <nav class="dash-nav-list">
-                <a href="index.html" class="dash-nav-item">
+                <a href="index" class="dash-nav-item">
                     <i class="fas fa-home"></i> Dashboard </a>
                 <div class="dash-nav-dropdown">
                     <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
                         <i class="fab fa-bitcoin"></i> Stocks Owned </a>
                     <div id="stocksOwned" class="dash-nav-dropdown-menu">
+                        <% for (const [key, value] of Object.entries(results.Stocks)) { %>
+                            <a href="./stocks?Firstname=<%=firstname%>&stockname=<%=key%>" class="dash-nav-dropdown-item"><%=key%></a>
+                        <% } %>
                     </div>
                 </div>
                 <div class="dash-nav-dropdown">
@@ -60,7 +58,7 @@
                     <div class="row dash-row">
                         <div class="col-xl-12">
                             <div class="stats stats-dark">
-                                <h2 id="username" class="stats-title"></h2>
+                                <h2 id="username" class="stats-title"><%=results.Name%></h2>
                                 <div class="stats-content">
                                     <div class="stats-icon">
                                         <i class="fas fa-user"></i>
@@ -97,6 +95,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <%
+                                        let i=1;
+                                        for (const [key, value] of Object.entries(results.Stocks)) { %>
+                                        <tr>
+                                            <th scope="row"><%=i%></th>
+                                            <td><a href="./stocks?Firstname=<%=firstname%>&stockname=<%=key%>"><%=key%></a></td>
+                                            <td><%=value.shares %></td>
+                                            <td><%=value.price %>$</td>
+                                            <td><%=(value.shares*value.price).toFixed(2)%>$</td>
+                                        </tr>
+                                        <% i++; } %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -112,7 +121,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="../js/spur.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<!--    <script src="../js/userDetails-js.js"></script>-->
     <script src="js/userDetails-js.js"></script>
 </body>
 

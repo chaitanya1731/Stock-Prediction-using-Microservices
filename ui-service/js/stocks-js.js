@@ -1,62 +1,8 @@
-
-let STOCKS_URL = `http://34.123.12.171:4000`;
-let USERS_URL = `http://104.198.35.242:3000`;
-let PREDICTION_URL = `http://34.67.47.144:5050`;
-let stockname = "";
-let firstname = "";
-let stockprice = 0;
-
-window.onload = function () {
-    // getUrls();
-    var url = document.location.href,
-        params = url.split('?')[1].split('&'),
-        data = {}, tmp;
-    for (var i = 0, l = params.length; i < l; i++) {
-        tmp = params[i].split('=')
-        data[tmp[0]] = tmp[1].replace(/[^a-zA-Z ]/g, "");;
-    }
-    // console.log(data);
-    firstname = data.Firstname;
-    stockname = data.stockname;
-
-    if (firstname && stockname){
-        setUserStocks(firstname);
-        setStockMetaData(stockname);
-        setStockCharts(stockname);
-    }
-};
-
-async function getUrls(){
-    const result1 = await fetch(`/getURLs?url=STOCKS_URL`);
-    STOCKS_URL = await result1.json();
-    const result2 = await fetch(`/getURLs?url=USERS_URL`);
-    USERS_URL = await result2.json();
-    const result3 = await fetch(`/getURLs?url=PREDICTION_URL`);
-    PREDICTION_URL = await result3.json();
-    // console.log(response1, response2, response3);
-// const USERS_URL = process.env.USERS_URL !== undefined ? process.env.USERS_URL : `http://localhost:3000`;
-// const PREDICTION_URL = process.env.PREDICTION_URL !== undefined ? process.env.PREDICTION_URL : `http://localhost:5050`;
-
-}
-
-async function setUserStocks(firstname){
-    const result = await fetch(`${USERS_URL}/getUserStocks?Firstname=${firstname}`);
-    const response = await result.json();
-    $("#username").html(response.Name);
-    let dropdown="";
-
-    for (const [key, value] of Object.entries(response.Stocks)) {
-        dropdown+=`<a href="./stocks.html?Firstname=${firstname}&stockname=${key}" class="dash-nav-dropdown-item">${key}</a>`;
-    }
-    $("#stocksOwned").append(dropdown);
-}
+let PREDICTION_URL = `http://34.66.138.117:5050`;
+setStockMetaData(stockname);
+setStockCharts(stockname);
 
 async function setStockMetaData(symbol){
-    const result = await fetch(`${STOCKS_URL}/getSingleStockInfo/${symbol}`);
-    const data = await result.json();
-    stockprice = data.regularMarketPrice;
-    displayData(data);
-
     const now = new Date();
     const nineAm = new Date().setHours(9,0,0,0);
     const fivePm = new Date().setHours(17, 0, 0, 0, 0);
@@ -67,26 +13,11 @@ async function setStockMetaData(symbol){
         $('#abc').removeClass('stats-success');
         $('#abc').removeClass('stats-danger');
         $('#abc').addClass('stats-dark');
-        $(`.stats-timeframe`).html('');
-        $(`#realtimeStockPrice`).html(`Realtime Price - ${stockname}`);
-        $(`#stockRate`).html(`$${stockprice}`);
-        $(`#percentChange`).html(``);
+        // $(`.stats-timeframe`).html('');
+        // $(`#realtimeStockPrice`).html(`Realtime Price - ${stockname}`);
+        // $(`#stockRate`).html(`$${stockprice}`);
+        // $(`#percentChange`).html(``);
     }
-    // let time = setInterval(updateRealtimeStock, 750);
-}
-
-function displayData(data){
-    $(`#longName`).html(data.longName);
-
-    $(`#displayName`).html(`${data.displayName}`);
-    $(`#fullExchangeName`).html(`${data.fullExchangeName}`);
-    $(`#currency`).html(`${data.currency} - ${data.region}`);
-    $(`#volume`).html(`${data.regularMarketVolume}`);
-
-    $(`#regMarketHigh`).html(`$${data.regularMarketDayHigh}`);
-    $(`#regMarketLow`).html(`$${data.regularMarketDayLow}`);
-    $(`#fiftyTwoWeekHigh`).html(`$${data.fiftyTwoWeekHigh}`);
-    $(`#fiftyTwoWeekLow`).html(`$${data.fiftyTwoWeekLow}`);
 }
 
 function updateRealtimeStock(){
@@ -113,8 +44,6 @@ function updateRealtimeStock(){
     }
 
 }
-// setInterval(updateRealtimeStock, 750);
-
 async function setStockCharts(stockname){
     let y = 1000;
     let data1, data2, data3;
@@ -123,9 +52,6 @@ async function setStockCharts(stockname){
     let dataPoints = [];
 
     // Chart 1 - Current Chart
-    const result1 = await fetch(`${STOCKS_URL}/getIntraDayQuotes/${stockname}`);
-    const currentChartData = await result1.json();
-    delete currentChartData._id;
     for(const [key, value] of Object.entries(currentChartData)){
         dataPoints.push({
             x: new Date(Date.parse(key)),
@@ -157,9 +83,6 @@ async function setStockCharts(stockname){
 
     dataPoints = [];
     // Chart 2 - Past Chart
-    const result2 = await fetch(`${STOCKS_URL}/getDailyQuotes/${stockname}`);
-    const pastChartData = await result2.json();
-    delete pastChartData._id;
     for(const [key, value] of Object.entries(pastChartData)){
         dataPoints.push({
             x: new Date(Date.parse(key)),

@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="../css/spur.css">
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>-->
-<!--    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>-->
-<!--    <script src="/js/chart-js-config.js"></script>-->
-
     <title>Stock Prediction using Microservices</title>
 </head>
 
@@ -21,10 +17,10 @@
                 <a href="#!" class="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </a>
-                <a href="index.html" class="spur-logo"><i class="fas fa-bolt"></i> <span>Welcome</span></a>
+                <a href="index" class="spur-logo"><i class="fas fa-bolt"></i> <span>Welcome</span></a>
             </header>
             <nav class="dash-nav-list">
-                <a href="index.html" class="dash-nav-item">
+                <a href="index" class="dash-nav-item">
                     <i class="fas fa-home"></i> Dashboard </a>
                 
                 <div class="dash-nav-dropdown">
@@ -65,11 +61,15 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Name</th>
-                                                <!-- <th scope="col">Firstname</th>
-                                                <th scope="col">Lastname</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <% results.forEach((result, i) => { %>
+                                        <tr>
+                                            <th scope="row"><%=i+1 %></th>
+                                            <td><a href="userDetails?Firstname=<%=result.Firstname %>"><%=result.Firstname %> <%=result.Lastname %></a></td>
+                                        </tr>
+                                        <% }) %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -126,7 +126,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="../js/spur.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<!--    <script src="../js/index-js.js"></script>-->
     <script src="js/index-js.js"></script>
     
 </body>

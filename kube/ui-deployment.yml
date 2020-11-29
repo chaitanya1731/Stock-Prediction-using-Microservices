@@ -6,6 +6,7 @@ spec:
   selector:
     app: ui-service
   type: LoadBalancer
+  loadBalancerIP: 34.66.138.117
   ports:
     - protocol: TCP
       port: 5000
@@ -37,8 +38,6 @@ spec:
               cpu: 100m
         env:
           - name: STOCKS_URL
-            value: http://34.123.12.171:4000
+            value: http://34.66.138.117:4000
           - name: USERS_URL
-            value: http://104.198.35.242:3000
-          - name: PREDICTION_URL
-            value: 34.67.47.144
+            value: http://34.66.138.117:3000

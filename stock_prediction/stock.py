@@ -12,14 +12,16 @@ import os
 
 app = flask.Flask(__name__)
 CORS(app)
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
 
-getUrl = os.environ.get("PREDICTION_URL")
-if getUrl is not None:
-	URL = getUrl
-else:
-	URL = "0.0.0.0"
+# getUrl = os.environ.get("PREDICTION_URL")
+# if getUrl is not None:
+# 	URL = getUrl
+# else:
+# 	URL = "0.0.0.0"
 
+# URL = "34.67.47.144"
+URL = "0.0.0.0"
 
 def available_stocks(stock):
         available_stocks = ['VTI','AAPL','WMT','V','MSFT','DIS','NFLX','NVDA','TWTR','ORCL','BABA','FB']

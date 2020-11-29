@@ -6,6 +6,7 @@ spec:
   selector:
     app: stock-service
   type: LoadBalancer
+  loadBalancerIP: 34.66.138.117
   ports:
     - protocol: TCP
       port: 4000

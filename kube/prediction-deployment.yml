@@ -6,6 +6,7 @@ spec:
   selector:
     app: prediction-service
   type: LoadBalancer
+  loadBalancerIP: 34.66.138.117
   ports:
     - protocol: TCP
       port: 5050
@@ -30,8 +31,3 @@ spec:
         image: iamchaitanyakulkarni/predictionservice:1
         ports:
         - containerPort: 5050
-        resources: 
-            limits: 
-              cpu: 100m
-            requests:
-              cpu: 100m

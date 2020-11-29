@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600|Open+Sans:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="../css/spur.css">
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>-->
-<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-    
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
-<!--    <script src="../js/chart-js-config.js"></script>-->
-    
     <title>Stock Prediction using Microservices</title>
 </head>
 
 <body>
+<script>
+    let stockname = <%-JSON.stringify(symbol)%>;
+    let stockprice = <%-JSON.stringify(stockMetadata.regularMarketPrice)%>;
+    let firstname = <%-JSON.stringify(firstname)%>;
+    let currentChartData = <%-JSON.stringify(chart1_data)%>;
+    let pastChartData = <%-JSON.stringify(chart2_data)%>;
+</script>
     <div class="dash">
         <div class="dash-nav dash-nav-dark">
             <header>
@@ -24,15 +26,18 @@
                     <i class="fas fa-bars"></i>
                 </a>
                 <a href="#" class="spur-logo"><span>Stock Details</span></a>
-                <!-- <a href="index.html" class="spur-logo"><i class="fas fa-bolt"></i> <span>Stock Details</span></a> -->
+                <!-- <a href="index.ejs" class="spur-logo"><i class="fas fa-bolt"></i> <span>Stock Details</span></a> -->
             </header>
             <nav class="dash-nav-list">
-                <a href="index.html" class="dash-nav-item">
+                <a href="index" class="dash-nav-item">
                     <i class="fas fa-home"></i> Dashboard </a>
                 <div class="dash-nav-dropdown">
                     <a href="#!" class="dash-nav-item dash-nav-dropdown-toggle">
                         <i class="fab fa-bitcoin"></i> Stocks Owned </a>
                     <div id="stocksOwned" class="dash-nav-dropdown-menu">
+                        <% for (const [key, value] of Object.entries(results.Stocks)) { %>
+                        <a href="./stocks?Firstname=<%=firstname%>&stockname=<%=key%>" class="dash-nav-dropdown-item"><%=key%></a>
+                        <% } %>
                     </div>
                 </div>
                 <div class="dash-nav-dropdown">
@@ -64,19 +69,19 @@
                                     <table id="metadata1">
                                         <tr>
                                             <td><h5>Display Name</h5></td>
-                                            <td><h5 id="displayName"></h5></td>
+                                            <td><h5 id="displayName"><%=stockMetadata.displayName%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>Exchange Name</h5></td>
-                                            <td><h5 id="fullExchangeName"></h5></td>
+                                            <td><h5 id="fullExchangeName"><%=stockMetadata.fullExchangeName%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>Currency & Region</h5></td>
-                                            <td><h5 id="currency"></h5></td>
+                                            <td><h5 id="currency"><%=stockMetadata.currency%> - <%=stockMetadata.region%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>Market Volume</h5></td>
-                                            <td><h5 id="volume"></h5></td>
+                                            <td><h5 id="volume"><%=stockMetadata.regularMarketVolume%></h5></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -89,19 +94,19 @@
                                     <table id="metadata1">
                                         <tr>
                                             <td><h5>Market High</h5></td>
-                                            <td><h5 id="regMarketHigh"></h5></td>
+                                            <td><h5 id="regMarketHigh"><%=stockMetadata.regularMarketDayHigh%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>Market Low</h5></td>
-                                            <td><h5 id="regMarketLow"></h5></td>
+                                            <td><h5 id="regMarketLow"><%=stockMetadata.regularMarketDayLow%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>52 Week High</h5></td>
-                                            <td><h5 id="fiftyTwoWeekHigh"></h5></td>
+                                            <td><h5 id="fiftyTwoWeekHigh"><%=stockMetadata.fiftyTwoWeekHigh%></h5></td>
                                         </tr>
                                         <tr>
                                             <td><h5>52 Week Low</h5></td>
-                                            <td><h5 id="fiftyTwoWeekLow"></h5></td>
+                                            <td><h5 id="fiftyTwoWeekLow"><%=stockMetadata.fiftyTwoWeekLow%></h5></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -110,14 +115,14 @@
 
                         <div class="col-xl-4">
                             <div id="abc" class="stats stats-dark">
-                                <h3 class="stats-title" id="realtimeStockPrice"></h3>
-                                <h5 class="stats-change" id="longName"></h5>
+                                <h3 class="stats-title" id="realtimeStockPrice">Realtime Price - <%=symbol%></h3>
+                                <h5 class="stats-change" id="longName"><%=stockMetadata.longName%></h5>
                                 <div class="stats-content">
                                     <div class="stats-icon">
                                         <i class="fab fa-bitcoin"></i>
                                     </div>
                                     <div class="stats-data">
-                                        <div id="stockRate" class="stats-number"></div>
+                                        <div id="stockRate" class="stats-number">$<%=stockMetadata.regularMarketPrice%></div>
                                         <div class="stats-change">
                                             <span id="percentChange" class="stats-percentage"></span>
                                             <span class="stats-timeframe"></span>
