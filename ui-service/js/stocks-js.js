@@ -1,11 +1,13 @@
-const STOCKS_URL = `http://localhost:4000`;
-const USERS_URL = `http://localhost:3000`;
-const PREDICTION_URL = `http://localhost:5050`;
+
+let STOCKS_URL = `http://34.123.12.171:4000`;
+let USERS_URL = `http://104.198.35.242:3000`;
+let PREDICTION_URL = `http://34.67.47.144:5050`;
 let stockname = "";
 let firstname = "";
 let stockprice = 0;
 
 window.onload = function () {
+    // getUrls();
     var url = document.location.href,
         params = url.split('?')[1].split('&'),
         data = {}, tmp;
@@ -23,6 +25,19 @@ window.onload = function () {
         setStockCharts(stockname);
     }
 };
+
+async function getUrls(){
+    const result1 = await fetch(`/getURLs?url=STOCKS_URL`);
+    STOCKS_URL = await result1.json();
+    const result2 = await fetch(`/getURLs?url=USERS_URL`);
+    USERS_URL = await result2.json();
+    const result3 = await fetch(`/getURLs?url=PREDICTION_URL`);
+    PREDICTION_URL = await result3.json();
+    // console.log(response1, response2, response3);
+// const USERS_URL = process.env.USERS_URL !== undefined ? process.env.USERS_URL : `http://localhost:3000`;
+// const PREDICTION_URL = process.env.PREDICTION_URL !== undefined ? process.env.PREDICTION_URL : `http://localhost:5050`;
+
+}
 
 async function setUserStocks(firstname){
     const result = await fetch(`${USERS_URL}/getUserStocks?Firstname=${firstname}`);

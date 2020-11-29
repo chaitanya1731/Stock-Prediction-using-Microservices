@@ -8,10 +8,18 @@ import pandas as pd
 import datetime
 import json
 from flask_cors import CORS
+import os
 
 app = flask.Flask(__name__)
 CORS(app)
 app.config["DEBUG"] = True
+
+getUrl = os.environ.get("PREDICTION_URL")
+if getUrl is not None:
+	URL = getUrl
+else:
+	URL = "0.0.0.0"
+
 
 def available_stocks(stock):
         available_stocks = ['VTI','AAPL','WMT','V','MSFT','DIS','NFLX','NVDA','TWTR','ORCL','BABA','FB']
@@ -122,4 +130,4 @@ def predict_stocks():
 		
 	
 
-app.run(host='0.0.0.0', port=5050) 
+app.run(host=URL, port=5050) 

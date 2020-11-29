@@ -1,4 +1,4 @@
-const URL = `http://localhost:3000`;
+const URL = `http://104.198.35.242:3000`;
 const users = {};
 
 document.getElementById('username').addEventListener('focusout', checkUserExist);
@@ -50,7 +50,7 @@ function submitForm(username){
 
 $.ajax({
     type: "GET",
-    url: 'http://localhost:3000/getStocks',
+    url: `${URL}/getStocks`,
     // data: {"type": "check"},
     dataType: "json",
     success: function(response){

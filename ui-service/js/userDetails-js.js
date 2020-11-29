@@ -1,4 +1,4 @@
-const URL = `http://localhost:3000`;
+const URL = `http://104.198.35.242:3000`;
 let firstname = "";
 
 window.onload = function () {
