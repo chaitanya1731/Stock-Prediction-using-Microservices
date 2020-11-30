@@ -9,10 +9,11 @@ const __dirPath = `${__dirname}/views`;
 
 
 const DB_URL = (process.env.USERS_URL !== undefined) ? process.env.USERS_URL : "http://localhost:3000";
-console.log(DB_URL);
 const STOCKS_URL = (process.env.STOCKS_URL !== undefined) ? process.env.STOCKS_URL : "http://localhost:4000";
-console.log(STOCKS_URL);
 const port = 5000;
+// const DB_URL = `http://34.66.138.117:3000`;
+// const STOCKS_URL = `http://localhost:4000`;
+
 
 const app = express();
 app.locals.port = port;
@@ -41,7 +42,7 @@ function home(app){
     return errorWrap(async function (req, res){
         try{
             const userInfo = await axios.get(`${DB_URL}/getStocks`);
-            res.render(`index`, {results: userInfo.data});
+            res.render(`index`, {results: userInfo.data, db_url: DB_URL});
             // res.sendFile(`${__dirPath}/index.ejs`);
         }
         catch(err){

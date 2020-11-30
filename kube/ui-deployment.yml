@@ -28,12 +28,12 @@ spec:
     spec:                      
       containers: 
       - name: ui-service 
-        image: iamchaitanyakulkarni/uiservice:1
+        image: iamchaitanyakulkarni/uiservice:3
         ports:
         - containerPort: 5000
         resources: 
             limits: 
-              cpu: 100m
+              cpu: 256m
             requests:
               cpu: 100m
         env:

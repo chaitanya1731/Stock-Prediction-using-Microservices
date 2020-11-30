@@ -21,7 +21,7 @@ export async function getIntraDayQuotes(symbol){
 
 export async function getDailyQuotes(symbol){
     try{
-        const dailyQuotes = await alpha.data.daily(symbol, `compact`,`json`);
+        const dailyQuotes = await alpha.data.daily(symbol, `full`,`json`);
         return dailyQuotes;
     }
     catch(err){

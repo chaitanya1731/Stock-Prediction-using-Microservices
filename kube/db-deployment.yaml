@@ -33,7 +33,7 @@ spec:
         - containerPort: 3000
         resources: 
             limits: 
-              cpu: 100m
+              cpu: 256m
             requests:
               cpu: 100m
         env:

@@ -64,7 +64,6 @@ function getSingleStockInfo(app){
                 displayName: stockInfoData.displayName,
                 symbol: stockInfoData.symbol
             };
-            // const data = await app.locals.model.addIntraDayQuotes(alphaData);
             res.json(data);
         }
         catch(err){

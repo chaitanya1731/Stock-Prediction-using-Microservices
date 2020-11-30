@@ -28,12 +28,12 @@ spec:
     spec:                      
       containers: 
       - name: stock-service 
-        image: iamchaitanyakulkarni/stockservice:1
+        image: iamchaitanyakulkarni/stockservice:2
         ports:
         - containerPort: 4000
         resources: 
             limits: 
-              cpu: 100m
+              cpu: 256m
             requests:
               cpu: 100m
         env:

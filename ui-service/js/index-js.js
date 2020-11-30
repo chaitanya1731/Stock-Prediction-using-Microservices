@@ -1,4 +1,5 @@
 const URL = `http://34.66.138.117:3000`;
+// Updated 14:42
 const users = {};
 
 document.getElementById('username').addEventListener('focusout', checkUserExist);

@@ -17,7 +17,7 @@ services:
 
   stock-service:
     container_name: stock-service
-    image: iamchaitanyakulkarni/stockservice:1
+    image: iamchaitanyakulkarni/stockservice:2
     restart: always
     build: 
       context: ./stock-service
@@ -31,7 +31,7 @@ services:
 
   ui-service:
     container_name: ui-service
-    image: iamchaitanyakulkarni/uiservice:1
+    image: iamchaitanyakulkarni/uiservice:3
     restart: always
     build: 
       context: ./ui-service

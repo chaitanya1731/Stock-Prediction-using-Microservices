@@ -39,8 +39,13 @@ export default class StockService {
             for (const [key, value] of Object.entries(data["Time Series (5min)"])) {
                 obj[key] = value;
             }
-            const result = await this.intradayCollection.updateOne({_id: obj._id}, { $set: obj }, {upsert : true});
-            return obj;
+            const sliceNum = (Object.keys(obj).length > 1000) ? 1000 : Object.keys(obj).length;
+            const sliced = Object.keys(obj).slice(0, sliceNum).reduce((result, key) => {
+                result[key] = obj[key];
+                return result;
+            }, {});
+            const result = await this.intradayCollection.updateOne({_id: obj._id}, { $set: sliced }, {upsert : true});
+            return sliced;
         }
         catch (e) {
             throw e;
@@ -54,8 +59,13 @@ export default class StockService {
             for (const [key, value] of Object.entries(data["Time Series (Daily)"])) {
                 obj[key] = value;
             }
-            const result = await this.dailyCollection.updateOne({_id: obj._id}, { $set: obj }, {upsert : true});
-            return obj;
+            const sliceNum = (Object.keys(obj).length > 1000) ? 1000 : Object.keys(obj).length;
+            const sliced = Object.keys(obj).slice(0, sliceNum).reduce((result, key) => {
+                result[key] = obj[key];
+                return result;
+            }, {});
+            const result = await this.dailyCollection.updateOne({_id: obj._id}, { $set: sliced }, {upsert : true});
+            return sliced;
         }
         catch (e) {
             throw e;
