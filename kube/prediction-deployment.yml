@@ -28,6 +28,6 @@ spec:
     spec:                      
       containers: 
       - name: prediction-service 
-        image: iamchaitanyakulkarni/predictionservice:1
+        image: iamchaitanyakulkarni/predictionservice:3
         ports:
         - containerPort: 5050

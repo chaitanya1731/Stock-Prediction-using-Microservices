@@ -24,7 +24,7 @@ CORS(app)
 URL = "0.0.0.0"
 
 def available_stocks(stock):
-        available_stocks = ['VTI','AAPL','WMT','V','MSFT','DIS','NFLX','NVDA','TWTR','ORCL','BABA','FB']
+        available_stocks = ['VTI','AAPL','WMT','V','MSFT','DIS','NFLX','NVDA','TWTR','ORCL','BABA','FB', 'GOOG']
         if stock not in available_stocks:
                 return "No stock found:"+stock+"\n"
         else:

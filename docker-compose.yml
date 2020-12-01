@@ -31,7 +31,7 @@ services:
 
   ui-service:
     container_name: ui-service
-    image: iamchaitanyakulkarni/uiservice:3
+    image: iamchaitanyakulkarni/uiservice:4
     restart: always
     build: 
       context: ./ui-service
@@ -49,7 +49,7 @@ services:
     
   prediction-service:
     container_name: prediction-service
-    image: iamchaitanyakulkarni/predictionservice:1
+    image: iamchaitanyakulkarni/predictionservice:3
     restart: always
     build: 
       context: ./stock_prediction
